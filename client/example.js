@@ -1,3 +1,5 @@
+var socket = io();
+
 $(function () {
 
     var router = new Router({
@@ -5,273 +7,156 @@ $(function () {
         enterTimeout: 250,
         leaveTimeout: 250
     });
+    
+    var _getTplName;
+    function getTpl(name) {
+        if (!name) {
+            name = _getTplName;
+        }
+        _getTplName = name;
+        return  _.template($('#' + name).html());
+    }
+
+    function getFormData(form) {
+        var arrs = form.serializeArray();
+        var json = {};
+        for (var i = 0; i < arrs.length; i++) {
+            json[arrs[i].name] = arrs[i].value;
+        }
+        return json;
+    }
+
+    var links = [
+        { name: 'A0' },
+        { name: 'A1' },
+        { name: 'A2' },
+        { name: 'A3' },
+        { name: 'D0' },
+        { name: 'D1' },
+        { name: 'D2' },
+        { name: 'D3' },
+        { name: 'D4' },
+        { name: 'D5' },
+        { name: 'D6' }
+    ];
+    var linkTypes = [
+        { name: '灯' },
+        { name: '温度' }
+    ];
+
+    var dataCache = {agents: [], links: links, linkTypes: linkTypes};
+    var isRefresh = true;
+    var isInitLoad = false;
+
+    socket.on('data', function(data) {
+        dataCache = data;
+
+        dataCache.links = links;
+        dataCache.linkTypes = linkTypes;
+
+        if (isRefresh || isInitLoad == false) {
+            setTimeout(function(){
+                var tpl = getTpl();
+                $('#container > div').html(tpl(dataCache));
+
+                //router.go(location.hash.substr(1));
+            }, 10);
+        }
+        isInitLoad = true;
+    });
 
     // grid
     var home = {
         url: '/',
         className: 'home',
+        tplName: 'tpl_home',
         render: function () {
-            return $('#tpl_home').html();
-        }
-    };
-
-    // button
-    var button = {
-        url: '/button',
-        className: 'button',
-        render: function () {
-            return $('#tpl_button').html();
-        }
-    };
-
-    // cell
-    var cell = {
-        url: '/cell',
-        className: 'cell',
-        render: function () {
-            return $('#tpl_cell').html();
+            isRefresh = true;
+            var tplName = this.tplName;
+            var tpl = getTpl(tplName);
+            return tpl(dataCache);
         },
         bind: function (){
-            $('.container').on('click', '#showTooltips', function (){
-                $('.js_tooltips').show();
-                setTimeout(function (){
-                    $('.js_tooltips').hide();
-                }, 3000);
+            var self = $('.container');
+            self.on('click', '.J_status_checkbox', function (){
+                var self = $(this);
+                var data = {};
+                data.agent = self.data('agent');
+                data.link = self.data('link');
+                data.value = self.attr("checked") ? "open" : "";
+                socket.emit('status set', data);
             });
         }
     };
 
-    // toast
-    var toast = {
-        url: '/toast',
-        className: 'toast',
+    // status
+    var statusAdd = {
+        url: '/status/add',
+        className: 'status-add',
+        tplName: 'tpl_status_add',
         render: function () {
-            return $('#tpl_toast').html();
+            isRefresh = false;
+            var tplName = this.tplName;
+            var tpl = getTpl(tplName);
+            return tpl(dataCache);
         },
-        bind: function () {
-            $('#container').on('click', '#showToast', function () {
-                $('#toast').show();
-                setTimeout(function () {
-                    $('#toast').hide();
-                }, 2000);
-            }).on('click', '#showLoadingToast', function () {
-                $('#loadingToast').show();
-                setTimeout(function () {
-                    $('#loadingToast').hide();
-                }, 2000);
+        bind: function (){
+            var self = $('.container');
+            self.on('click', '.status-add .J_submit', function (){
+                var json  = getFormData($('form', self));
+                socket.emit('status add', json);
+                setTimeout(function(){
+                    location.replace('#/');
+                    //router.go('/', true);
+                }, 100);
             });
         }
     };
 
-    // dialog
-    var dialog = {
-        url: '/dialog',
-        className: 'dialog',
+    // agent
+    var agent = {
+        url: '/agent',
+        className: 'agent',
+        tplName: 'tpl_agent',
         render: function () {
-            return $('#tpl_dialog').html();
+            isRefresh = true;
+            var tplName = this.tplName;
+            var tpl = getTpl(tplName);
+            return tpl(dataCache);
         },
-        bind: function () {
-            $('#container').on('click', '#showDialog1', function () {
-                $('#dialog1').show().on('click', '.weui_btn_dialog', function () {
-                    $('#dialog1').off('click').hide();
-                });
-            }).on('click', '#showDialog2', function () {
-                $('#dialog2').show().on('click', '.weui_btn_dialog', function () {
-                    $('#dialog2').off('click').hide();
-                });
-            });
-
+        bind: function (){
         }
     };
 
-    // progress
-    var progress = {
-        url: '/progress',
-        className: 'progress',
+    // agent
+    var agentAdd = {
+        url: '/agent/add',
+        className: 'agent-add',
+        tplName: 'tpl_agent_add',
         render: function () {
-            return $('#tpl_progress').html();
+            isRefresh = false;
+            var tplName = this.tplName;
+            var tpl = getTpl(tplName);
+            return tpl(dataCache);
         },
-        bind: function () {
-            $('#container').on('click', '#btnStartProgress', function () {
-                if ($(this).hasClass('weui_btn_disabled')) {
-                    return;
-                }
+        bind: function (){
+            var self = $('.container');
+            self.on('click', '.agent-add .J_submit', function (){
+                var json  = getFormData($('form', self));
+                socket.emit('agent add', json)
 
-                $(this).addClass('weui_btn_disabled');
-
-                var progress = 0;
-                var $progress = $('.js_progress');
-
-                function next() {
-                    $progress.css({width: progress + '%'});
-                    progress = ++progress % 100;
-                    setTimeout(next, 30);
-                }
-
-                next();
-            });
-        }
-    };
-
-    // msg
-    var msg = {
-        url: '/msg',
-        className: 'msg',
-        render: function () {
-            return $('#tpl_msg').html();
-        }
-    };
-
-    // article
-    var article = {
-        url: '/article',
-        className: 'article',
-        render: function () {
-            return $('#tpl_article').html();
-        }
-    };
-
-    // actionsheet
-    var actionsheet = {
-        url: '/actionsheet',
-        className: 'actionsheet',
-        render: function () {
-            return $('#tpl_actionsheet').html();
-        },
-        bind: function () {
-            $('#container').on('click', '#showActionSheet', function () {
-                var mask = $('#mask');
-                var weuiActionsheet = $('#weui_actionsheet');
-                weuiActionsheet.addClass('weui_actionsheet_toggle');
-                mask.show()
-                    .focus()//加focus是为了触发一次页面的重排(reflow or layout thrashing),使mask的transition动画得以正常触发
-                    .addClass('weui_fade_toggle').one('click', function () {
-                    hideActionSheet(weuiActionsheet, mask);
-                });
-                $('#actionsheet_cancel').one('click', function () {
-                    hideActionSheet(weuiActionsheet, mask);
-                });
-                mask.unbind('transitionend').unbind('webkitTransitionEnd');
-
-                function hideActionSheet(weuiActionsheet, mask) {
-                    weuiActionsheet.removeClass('weui_actionsheet_toggle');
-                    mask.removeClass('weui_fade_toggle');
-                    mask.on('transitionend', function () {
-                        mask.hide();
-                    }).on('webkitTransitionEnd', function () {
-                        mask.hide();
-                    })
-                }
-            });
-        }
-    };
-
-    // icons
-    var icons = {
-        url: '/icons',
-        className: 'icons',
-        render: function () {
-            return $('#tpl_icons').html();
-        }
-    };
-
-    // panel
-    var panel = {
-        url: '/panel',
-        className: 'panel',
-        render: function () {
-            return $('#tpl_panel').html();
-        }
-    };
-
-    // tab
-    var tab = {
-        url: '/tab',
-        className: 'tab',
-        render: function () {
-            return $('#tpl_tab').html();
-        }
-    };
-
-    // navbar
-    var navbar = {
-        url: '/navbar',
-        className: 'navbar',
-        render: function () {
-            return $('#tpl_navbar').html();
-        },
-        bind: function () {
-            $('#container').on('click', '.weui_navbar_item', function () {
-                $(this).addClass('weui_bar_item_on').siblings('.weui_bar_item_on').removeClass('weui_bar_item_on');
-            });
-        }
-    };
-
-    // tabbar
-    var tabbar = {
-        url: '/tabbar',
-        className: 'tabbar',
-        render: function () {
-            return $('#tpl_tabbar').html();
-        },
-        bind: function () {
-            $('#container').on('click', '.weui_tabbar_item', function () {
-                $(this).addClass('weui_bar_item_on').siblings('.weui_bar_item_on').removeClass('weui_bar_item_on');
-            });
-        }
-    };
-
-    // searchbar
-    var searchbar = {
-        url: '/searchbar',
-        className: 'searchbar',
-        render: function () {
-            return $('#tpl_searchbar').html();
-        },
-        bind: function () {
-            $('#container').on('focus', '#search_input', function () {
-                var $weuiSearchBar = $('#search_bar');
-                $weuiSearchBar.addClass('weui_search_focusing');
-            }).on('blur', '#search_input', function () {
-                var $weuiSearchBar = $('#search_bar');
-                $weuiSearchBar.removeClass('weui_search_focusing');
-                if ($(this).val()) {
-                    $('#search_text').hide();
-                } else {
-                    $('#search_text').show();
-                }
-            }).on('input', '#search_input', function () {
-                var $searchShow = $("#search_show");
-                if ($(this).val()) {
-                    $searchShow.show();
-                } else {
-                    $searchShow.hide();
-                }
-            }).on('touchend', '#search_cancel', function () {
-                $("#search_show").hide();
-                $('#search_input').val('');
-            }).on('touchend', '#search_clear', function () {
-                $("#search_show").hide();
-                $('#search_input').val('');
+                setTimeout(function(){
+                    location.replace('#/agent');
+                    //router.go('/agent', true);
+                }, 100);
             });
         }
     };
 
     router.push(home)
-        .push(button)
-        .push(cell)
-        .push(toast)
-        .push(dialog)
-        .push(progress)
-        .push(msg)
-        .push(article)
-        .push(actionsheet)
-        .push(icons)
-        .push(panel)
-        .push(tab)
-        .push(navbar)
-        .push(tabbar)
-        .push(searchbar)
+        .push(statusAdd)
+        .push(agent)
+        .push(agentAdd)
         .setDefault('/')
         .init();
 

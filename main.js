@@ -1,92 +1,279 @@
 /*jslint node:true, vars:true, bitwise:true, unparam:true */
 /*jshint unused:true */
 
-/*
-The Web Sockets Node.js sample application distributed within Intel® XDK IoT Edition under the IoT with Node.js Projects project creation option showcases how to use the socket.io NodeJS module to enable real time communication between clients and the development board via a web browser to toggle the state of the onboard LED.
+var os = require('os');
 
-MRAA - Low Level Skeleton Library for Communication on GNU/Linux platforms
-Library in C/C++ to interface with Galileo & other Intel platforms, in a structured and sane API with port nanmes/numbering that match boards & with bindings to javascript & python.
-
-Steps for installing/updating MRAA & UPM Library on Intel IoT Platforms with IoTDevKit Linux* image
-Using a ssh client: 
-1. echo "src maa-upm http://iotdk.intel.com/repos/1.1/intelgalactic" > /etc/opkg/intel-iotdk.conf
-2. opkg update
-3. opkg upgrade
-
-OR
-In Intel XDK IoT Edition under the Develop Tab (for Internet of Things Embedded Application)
-Develop Tab
-1. Connect to board via the IoT Device Drop down (Add Manual Connection or pick device in list)
-2. Press the "Settings" button
-3. Click the "Update libraries on board" option
-
-Review README.md file for in-depth information about web sockets communication
-
-*/
-
-var mraa = require('mraa'); //require mraa
-console.log('MRAA Version: ' + mraa.getVersion()); //write the mraa version to the Intel XDK console
-//var myOnboardLed = new mraa.Gpio(3, false, true); //LED hooked up to digital pin (or built in pin on Galileo Gen1)
-var myOnboardLed = new mraa.Gpio(13); //LED hooked up to digital pin 13 (or built in pin on Intel Galileo Gen2 as well as Intel Edison)
-myOnboardLed.dir(mraa.DIR_OUT); //set the gpio direction to output
-var ledState = true; //Boolean to hold the state of Led
-
+var port = 3008;
+var request = require('request')
 var express = require('express');
+var bodyParser = require('body-parser');
 var app = express();
 var path = require('path');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-var connectedUsersArray = [];
-var userId;
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 app.get('/', function(req, res) {
-    //Join all arguments together and normalize the resulting path.
     res.sendFile(path.join(__dirname + '/client', 'index.html'));
 });
-
-//Allow use of files in client folder
 app.use(express.static(__dirname + '/client'));
 app.use('/client', express.static(__dirname + '/client'));
 
-//Socket.io Event handlers
+app.use('/h', function(req, res, next){
+    reloadH();
+    res.json({"status": 200});
+});
+
+var dataCache = {version: 1, agents: [], server: []};
+
+app.use('/update', function(req, res, next){
+    if (typeof req.body == 'object') {
+        var body = req.body;
+        for (var key in body) {dataCache[key] = body[key];}
+    }
+    res.json({"status": 200});
+});
+
 io.on('connection', function(socket) {
-    console.log("\n Add new User: u"+connectedUsersArray.length);
-    if(connectedUsersArray.length > 0) {
-        var element = connectedUsersArray[connectedUsersArray.length-1];
-        userId = 'u' + (parseInt(element.replace("u", ""))+1);
-    }
-    else {
-        userId = "u0";
-    }
-    console.log('a user connected: '+userId);
-    io.emit('user connect', userId);
-    connectedUsersArray.push(userId);
-    console.log('Number of Users Connected ' + connectedUsersArray.length);
-    console.log('User(s) Connected: ' + connectedUsersArray);
-    io.emit('connected users', connectedUsersArray);
-    
-    socket.on('user disconnect', function(msg) {
-        console.log('remove: ' + msg);
-        connectedUsersArray.splice(connectedUsersArray.lastIndexOf(msg), 1);
-        io.emit('user disconnect', msg);
+
+    socket.on('agent add', function(data) {
+        console.log('agent add', data);
+        var agents = dataCache.agents, index = 0;
+        for (; index < agents.length; index++) {
+            var agent = agents[index];
+            console.log(agent);
+            if (agent.ip == data.agent) {
+                agent.name = data.name;
+                break;
+            }
+        }
+        if (index >= agents.length) {
+            data.status = data.status || [];
+            dataCache.agents.push(data);
+        }
+
+        dataCache.version++;
+        runMasterPush();
     });
     
-    socket.on('chat message', function(msg) {
-        io.emit('chat message', msg);
-        console.log('message: ' + msg.value);
+    socket.on('status add', function(data) {
+        console.log('status add', data);
+
+        var agents = dataCache.agents, index = 0;
+        var agent;
+        for (; index < agents.length; index++) {
+            agent = agents[index];
+            if (agent.ip == data.ip) {
+                break;
+            }
+        }
+        if (agent) {
+            agent.status.push(data);
+        }
+        dataCache.version++;
+        runMasterPush();
     });
-    
-    socket.on('toogle led', function(msg) {
-        myOnboardLed.write(ledState?1:0); //if ledState is true then write a '1' (high) otherwise write a '0' (low)
-        msg.value = ledState;
-        io.emit('toogle led', msg);
-        ledState = !ledState; //invert the ledState
+
+    socket.on('status set', function(data) {
+        console.log('status set', data);
+
+        var agents = dataCache.agents, index = 0;
+        var agent;
+        for (; index < agents.length; index++) {
+            agent = agents[index];
+            if (agent.ip == data.agent) {
+                break;
+            }
+        }
+        if (agent) {
+            var status;
+            for (; index < agent.status.length; index++) {
+                status = agent.status[index];
+                if (status.link == data.link) {
+                    break;
+                }
+            }
+            if (status) {
+                status.value = data.value;
+                dataCache.version++;
+                runMasterPush();
+            } else {
+                console.log("no status");
+            }
+        } else {
+            console.log('no agent');
+        }
     });
-    
+
+    sendClient();
 });
 
+function sendClient(){
+    console.log('sendClient', JSON.stringify(dataCache));
+    io.emit('data', dataCache);
+}
 
-http.listen(3000, function(){
-    console.log('Web server Active listening on *:3000');
+http.listen(port, function(){
+    console.log('Web server Active listening on *:' + port + ' ' + getLocalIP());
 });
+
+var hTimer;
+function reloadH(){
+    clearTimeout(hTimer);
+    hTimer = setTimeout(function(){
+
+        upMaster();
+        reloadH();
+    }, 5 * 1000);
+}
+reloadH();
+
+function upMaster(){
+    var localIP = getLocalIP();
+    console.log("upMaster localIP: " + localIP);
+    
+    if (dataCache.server.length >= 2 && dataCache.server[1] == localIP) {
+        var index = dataCache.server.indexOf(localIP);
+        if (index != -1) {
+            dataCache.server.splice(index, 1);
+        }
+        dataCache.server.splice(0, 0, localIP);
+        sendClient();
+        runMaster();
+    }
+
+    if (dataCache.server.length == 0) {
+        dataCache.server.push(localIP);
+        dataCache.agents.push({
+            name: '隔壁老王',
+            ip: localIP,
+            status: [
+                {
+                    name: '卧室温度',
+                    link: 'A0',
+                    linkType: '温度',
+                    value: ''
+                },
+                {
+                    name: '卧室灯',
+                    link: 'D6',
+                    linkType: '灯',
+                    value: ''
+                }
+            ]
+        });
+        sendClient();
+        runMaster();
+    }
+}
+
+var masterTimer;
+function runMaster() {
+    function done(){
+        runMasterPush();
+        runMaster();
+    }
+
+    clearTimeout(masterTimer);
+    masterTimer = setTimeout(function(){
+        var localIP = getLocalIP();
+        var localIPs = localIP.split('.');
+
+        var doneIndex = 0;
+        for (var i = 0; i < 255; i++) {
+            localIPs[3] = i;
+            var ip = localIPs.join('.');
+            doneIndex++;
+
+            (function(ip){
+                var url = 'http://' + ip + ':' + port + '/h';
+                request({ method: 'GET', url: url, timeout: 2}, function (e, r, body) {
+                    doneIndex--;
+                    if (body) {
+                        var index = dataCache.server.indexOf(ip);
+                        if (index == -1) {
+                            dataCache.server.push(localIP);
+                            dataCache.agents.push({
+                                name: '',
+                                ip: localIP,
+                                status: []
+                            });
+                        }
+                    }
+                    if (doneIndex == 0) {
+                        done();
+                    }
+                });
+            })(ip);
+        }
+    }, 3 * 1000);
+}
+
+function runMasterPush(){
+    var doneIndex = 0;
+    var formData = JSON.parse(JSON.stringify(dataCache));
+
+    function done(){
+        sendClient();
+    }
+    for (var i = 0; i < formData.server.length; i++) {
+        var ip = formData.server[i];
+        doneIndex++;
+        (function(ip){
+            var url = 'http://' + ip + ':' + port + '/update';
+            request({ method: 'POST', url: url, json:true, body: formData, timeout: 2 * 1000}, function (e, r, body) {
+                doneIndex--;
+                if (doneIndex == 0) {
+                    done();
+                }
+            });
+        })(ip);
+    }
+}
+
+function getLocalIP() {
+    var map = [];
+    var ifaces = os.networkInterfaces();
+    
+    if (ifaces['wlan0']) {
+        var iface = ifaces['wlan0'];
+        return iface[0].address;
+    } else {
+        return '';
+    }
+}
+
+var taskTimer;
+function runTask(){
+    clearInterval(taskTimer);
+    taskTimer = setInterval(function(){
+        _runTask();
+    }, 1000);
+}
+
+
+function _runTask(){
+    var localIP = getLocalIP();
+    console.log('start task', JSON.stringify(dataCache));
+
+    var agents = dataCache.agents, index = 0;
+    var agent;
+    for (; index < agents.length; index++) {
+        agent = agents[index];
+        if (agent.ip == localIP) {
+            break;
+        }
+    }
+    if (agent) {
+        require('./task.js')(dataCache, agent);
+    }
+}
+runTask();
+// var ip = '127.0.0.1';
+// var url = 'http://' + ip + ':' + port + '/update';
+// request({ method: 'POST',    json:true,
+//  url: url, body: dataCache, timeout: 2 * 1000}, function (e, r, body) {
+//     console.log(e, body);
+// });

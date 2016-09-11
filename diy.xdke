@@ -7,5 +7,389 @@
   },
   "editorTab": {
     "currentEditorMode": 0
+  },
+  "iot-tab": {
+    "fileStatus": {
+      "LICENSE.md": {
+        "previousModTime": 1473519272000,
+        "modified": 1473519272000,
+        "seen": true,
+        "name": "LICENSE.md"
+      },
+      "README.md": {
+        "previousModTime": 1473519272000,
+        "modified": 1473519272000,
+        "seen": true,
+        "name": "README.md"
+      },
+      "diy.xdk": {
+        "previousModTime": 1473569144000,
+        "modified": 1473569144000,
+        "seen": true,
+        "name": "diy.xdk"
+      },
+      "diy.xdke": {
+        "previousModTime": 1473572419000,
+        "modified": 1473572419000,
+        "seen": true,
+        "name": "diy.xdke"
+      },
+      "icon.png": {
+        "previousModTime": 1473519272000,
+        "modified": 1473519272000,
+        "seen": true,
+        "name": "icon.png"
+      },
+      "io.js": {
+        "previousModTime": 1473571569000,
+        "modified": 1473571569000,
+        "seen": true,
+        "name": "io.js"
+      },
+      "main.js": {
+        "previousModTime": 1473572414000,
+        "modified": 1473572414000,
+        "seen": true,
+        "name": "main.js"
+      },
+      "package.json": {
+        "previousModTime": 1473563971000,
+        "modified": 1473563971000,
+        "seen": true,
+        "name": "package.json"
+      },
+      "server.js": {
+        "previousModTime": 1473519768000,
+        "modified": 1473519768000,
+        "seen": true,
+        "name": "server.js"
+      },
+      "websockets_client.png": {
+        "previousModTime": 1473519272000,
+        "modified": 1473519272000,
+        "seen": true,
+        "name": "websockets_client.png"
+      },
+      "client/README.md": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/README.md"
+      },
+      "client/example.css": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/example.css"
+      },
+      "client/example.js": {
+        "previousModTime": 1473572582000,
+        "modified": 1473572582000,
+        "seen": true,
+        "name": "client/example.js"
+      },
+      "client/index.html": {
+        "previousModTime": 1473572688000,
+        "modified": 1473572688000,
+        "seen": true,
+        "name": "client/index.html"
+      },
+      "client/router.min.js": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/router.min.js"
+      },
+      "client/underscore-min.js": {
+        "previousModTime": 1427988721000,
+        "modified": 1427988721000,
+        "seen": true,
+        "name": "client/underscore-min.js"
+      },
+      "client/weui.css": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/weui.css"
+      },
+      "client/zepto.min.js": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/zepto.min.js"
+      },
+      "client/demo/README.md": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/README.md"
+      },
+      "client/demo/example.css": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/example.css"
+      },
+      "client/demo/example.js": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/example.js"
+      },
+      "client/demo/index.html": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/index.html"
+      },
+      "client/demo/router.min.js": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/router.min.js"
+      },
+      "client/demo/weui.css": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/weui.css"
+      },
+      "client/demo/zepto.min.js": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/zepto.min.js"
+      },
+      "client/demo/images/icon_nav_actionSheet.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/images/icon_nav_actionSheet.png"
+      },
+      "client/demo/images/icon_nav_article.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/images/icon_nav_article.png"
+      },
+      "client/demo/images/icon_nav_button.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/images/icon_nav_button.png"
+      },
+      "client/demo/images/icon_nav_cell.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/images/icon_nav_cell.png"
+      },
+      "client/demo/images/icon_nav_dialog.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/images/icon_nav_dialog.png"
+      },
+      "client/demo/images/icon_nav_icons.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/images/icon_nav_icons.png"
+      },
+      "client/demo/images/icon_nav_msg.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/images/icon_nav_msg.png"
+      },
+      "client/demo/images/icon_nav_panel.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/images/icon_nav_panel.png"
+      },
+      "client/demo/images/icon_nav_progress.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/images/icon_nav_progress.png"
+      },
+      "client/demo/images/icon_nav_search_bar.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/images/icon_nav_search_bar.png"
+      },
+      "client/demo/images/icon_nav_tab.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/images/icon_nav_tab.png"
+      },
+      "client/demo/images/icon_nav_toast.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/images/icon_nav_toast.png"
+      },
+      "client/demo/images/pic_article.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/images/pic_article.png"
+      },
+      "client/demo/images/pic_article_1.jpg": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/images/pic_article_1.jpg"
+      },
+      "client/demo/images/pic_article_2.jpg": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/images/pic_article_2.jpg"
+      },
+      "client/demo/images/vcode.jpg": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/demo/images/vcode.jpg"
+      },
+      "client/images/icon_nav_actionSheet.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/images/icon_nav_actionSheet.png"
+      },
+      "client/images/icon_nav_article.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/images/icon_nav_article.png"
+      },
+      "client/images/icon_nav_button.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/images/icon_nav_button.png"
+      },
+      "client/images/icon_nav_cell.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/images/icon_nav_cell.png"
+      },
+      "client/images/icon_nav_dialog.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/images/icon_nav_dialog.png"
+      },
+      "client/images/icon_nav_icons.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/images/icon_nav_icons.png"
+      },
+      "client/images/icon_nav_msg.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/images/icon_nav_msg.png"
+      },
+      "client/images/icon_nav_panel.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/images/icon_nav_panel.png"
+      },
+      "client/images/icon_nav_progress.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/images/icon_nav_progress.png"
+      },
+      "client/images/icon_nav_search_bar.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/images/icon_nav_search_bar.png"
+      },
+      "client/images/icon_nav_tab.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/images/icon_nav_tab.png"
+      },
+      "client/images/icon_nav_toast.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/images/icon_nav_toast.png"
+      },
+      "client/images/pic_article.png": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/images/pic_article.png"
+      },
+      "client/images/pic_article_1.jpg": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/images/pic_article_1.jpg"
+      },
+      "client/images/pic_article_2.jpg": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/images/pic_article_2.jpg"
+      },
+      "client/images/vcode.jpg": {
+        "previousModTime": 1465316986000,
+        "modified": 1465316986000,
+        "seen": true,
+        "name": "client/images/vcode.jpg"
+      },
+      "client/old/index.css": {
+        "previousModTime": 1473519272000,
+        "modified": 1473519272000,
+        "seen": true,
+        "name": "client/old/index.css"
+      },
+      "client/old/index.html": {
+        "previousModTime": 1473519272000,
+        "modified": 1473519272000,
+        "seen": true,
+        "name": "client/old/index.html"
+      },
+      "client/old/index.js": {
+        "previousModTime": 1473519272000,
+        "modified": 1473519272000,
+        "seen": true,
+        "name": "client/old/index.js"
+      },
+      "xdk/project-info.json": {
+        "previousModTime": 1473519275000,
+        "modified": 1473519275000,
+        "seen": true,
+        "name": "xdk/project-info.json"
+      },
+      "task.js": {
+        "previousModTime": 1473570569000,
+        "modified": 1473570569000,
+        "seen": true,
+        "name": "task.js"
+      }
+    },
+    "boardFileStatus": {
+      "client/example.js": {
+        "previousModTime": 1473573098498
+      },
+      "client/index.html": {
+        "previousModTime": 1473573098498
+      }
+    }
   }
 }
