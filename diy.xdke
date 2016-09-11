@@ -29,8 +29,8 @@
         "name": "diy.xdk"
       },
       "diy.xdke": {
-        "previousModTime": 1473572419000,
-        "modified": 1473572419000,
+        "previousModTime": 1473578382000,
+        "modified": 1473578382000,
         "seen": true,
         "name": "diy.xdke"
       },
@@ -47,8 +47,8 @@
         "name": "io.js"
       },
       "main.js": {
-        "previousModTime": 1473572414000,
-        "modified": 1473572414000,
+        "previousModTime": 1473578760000,
+        "modified": 1473578760000,
         "seen": true,
         "name": "main.js"
       },
@@ -83,20 +83,20 @@
         "name": "client/example.css"
       },
       "client/example.js": {
-        "previousModTime": 1473572582000,
-        "modified": 1473572582000,
+        "previousModTime": 1473573508000,
+        "modified": 1473573508000,
         "seen": true,
         "name": "client/example.js"
       },
       "client/index.html": {
-        "previousModTime": 1473572688000,
-        "modified": 1473572688000,
+        "previousModTime": 1473578348000,
+        "modified": 1473578348000,
         "seen": true,
         "name": "client/index.html"
       },
       "client/router.min.js": {
-        "previousModTime": 1465316986000,
-        "modified": 1465316986000,
+        "previousModTime": 1473573450000,
+        "modified": 1473573450000,
         "seen": true,
         "name": "client/router.min.js"
       },
@@ -269,8 +269,8 @@
         "name": "client/images/icon_nav_article.png"
       },
       "client/images/icon_nav_button.png": {
-        "previousModTime": 1465316986000,
-        "modified": 1465316986000,
+        "previousModTime": 1473575856000,
+        "modified": 1473575856000,
         "seen": true,
         "name": "client/images/icon_nav_button.png"
       },
@@ -293,8 +293,8 @@
         "name": "client/images/icon_nav_icons.png"
       },
       "client/images/icon_nav_msg.png": {
-        "previousModTime": 1465316986000,
-        "modified": 1465316986000,
+        "previousModTime": 1473575877000,
+        "modified": 1473575877000,
         "seen": true,
         "name": "client/images/icon_nav_msg.png"
       },
@@ -377,18 +377,15 @@
         "name": "xdk/project-info.json"
       },
       "task.js": {
-        "previousModTime": 1473570569000,
-        "modified": 1473570569000,
+        "previousModTime": 1473575567000,
+        "modified": 1473575567000,
         "seen": true,
         "name": "task.js"
       }
     },
     "boardFileStatus": {
-      "client/example.js": {
-        "previousModTime": 1473573098498
-      },
-      "client/index.html": {
-        "previousModTime": 1473573098498
+      "main.js": {
+        "previousModTime": 1473578768639
       }
     }
   }

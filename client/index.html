@@ -12,10 +12,10 @@
 
 <script type="text/html" id="tpl_home">
 <div class="bd">
+<% if (agents.length) { %>
     <% for (var i = 0; i < agents.length; i++) { var agent = agents[i]; %>
     <div class="weui_cells_title"><%= agent.name %></div>
     <div class="weui_cells">
-    <% console.log(agents, agent) %>
         <% for (var si = 0; si < agent.status.length; si++) { var status = agent.status[si]; %>
         <div class="weui_cell">
             <div class="weui_cell_bd weui_cell_primary">
@@ -26,14 +26,26 @@
                 <input class="weui_switch J_status_checkbox" data-agent="<%= agent.ip %>" data-link="<%= status.link %>" data-type="<%= status.linkType %>" type="checkbox" <% if (status.value) { %>checked<% } %>/>
             </div>
             <% } else if (status.linkType == '温度') { %>
-            <div class="weui_cell_ft"><% if (status.value) { %><%= status.value %>摄氏度<% } else { %><% } %></div>
+            <div class="weui_cell_ft"><% if (status.value) { %><%= status.value %>℃<% } else { %>加载中<% } %></div>
             <% } else { %>
             <div class="weui_cell_ft"><%= status.value %></div>
             <% } %>
+
         </div>
         <% } %>
     </div>
     <% } %>
+
+<% } else { %>
+
+<div class="weui_msg">
+    <div class="weui_icon_area"><i class="weui_icon_waiting weui_icon_msg"></i></div>
+    <div class="weui_text_area">
+        <h2 class="weui_msg_title">加载中</h2>
+    </div>
+</div>
+<% } %>
+
     <div class="weui_btn_area">
         <a class="weui_btn weui_btn_primary" href="#/status/add">新增状态</a>
     </div>
@@ -41,13 +53,13 @@
     <div class="weui_tabbar">
         <a href="#/" class="weui_tabbar_item weui_bar_item_on">
             <div class="weui_tabbar_icon">
-                <img src="https://weui.github.io/weui/images/icon_nav_button.png" alt="">
+                <img src="/images/icon_nav_button.png" alt="">
             </div>
             <p class="weui_tabbar_label">状态</p>
         </a>
         <a href="#/agent" class="weui_tabbar_item">
             <div class="weui_tabbar_icon">
-                <img src="https://weui.github.io/weui/images/icon_nav_msg.png" alt="">
+                <img src="/images/icon_nav_msg.png" alt="">
             </div>
             <p class="weui_tabbar_label">特工</p>
         </a>
@@ -140,13 +152,13 @@
     <div class="weui_tabbar">
         <a href="#/" class="weui_tabbar_item">
             <div class="weui_tabbar_icon">
-                <img src="https://weui.github.io/weui/images/icon_nav_button.png" alt="">
+                <img src="/images/icon_nav_button.png" alt="">
             </div>
             <p class="weui_tabbar_label">状态</p>
         </a>
         <a href="#/agent" class="weui_tabbar_item weui_bar_item_on">
             <div class="weui_tabbar_icon">
-                <img src="https://weui.github.io/weui/images/icon_nav_msg.png" alt="">
+                <img src="/images/icon_nav_msg.png" alt="">
             </div>
             <p class="weui_tabbar_label">特工</p>
         </a>

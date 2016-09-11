@@ -33,6 +33,5 @@ module.exports = function(dataCache, agent) {
 			console.log("温度：", temp);
 		}
 	}
-
 }
 

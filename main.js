@@ -111,6 +111,7 @@ io.on('connection', function(socket) {
 });
 
 function sendClient(){
+    _runTask();
     console.log('sendClient', JSON.stringify(dataCache));
     io.emit('data', dataCache);
 }
@@ -126,7 +127,7 @@ function reloadH(){
 
         upMaster();
         reloadH();
-    }, 5 * 1000);
+    }, 6 * 1000);
 }
 reloadH();
 
@@ -157,10 +158,34 @@ function upMaster(){
                     value: ''
                 },
                 {
-                    name: '卧室灯',
+                    name: '卧室台灯',
                     link: 'D6',
                     linkType: '灯',
                     value: ''
+                },
+                {
+                    name: '客厅温度',
+                    link: 'A0',
+                    linkType: '温度',
+                    value: ''
+                },
+                {
+                    name: '客厅灯',
+                    link: 'D8',
+                    linkType: '灯',
+                    value: ''
+                },
+                {
+                    name: '空气质量',
+                    link: 'D7',
+                    linkType: '空气',
+                    value: '良'
+                },
+                {
+                    name: '空气湿度',
+                    link: 'D7',
+                    linkType: '湿度',
+                    value: '良'
                 }
             ]
         });
@@ -178,7 +203,7 @@ function runMaster() {
 
     clearTimeout(masterTimer);
     masterTimer = setTimeout(function(){
-        var localIP = getLocalIP();
+        var localIP = getLocalIP() || '172.16.1.175';
         var localIPs = localIP.split('.');
 
         var doneIndex = 0;
@@ -189,15 +214,15 @@ function runMaster() {
 
             (function(ip){
                 var url = 'http://' + ip + ':' + port + '/h';
-                request({ method: 'GET', url: url, timeout: 2}, function (e, r, body) {
+                request({ method: 'GET', url: url, timeout: 2 * 1000}, function (e, r, body) {
                     doneIndex--;
                     if (body) {
                         var index = dataCache.server.indexOf(ip);
                         if (index == -1) {
-                            dataCache.server.push(localIP);
+                            dataCache.server.push(ip);
                             dataCache.agents.push({
-                                name: '',
-                                ip: localIP,
+                                name: ip,
+                                ip: ip,
                                 status: []
                             });
                         }
@@ -247,14 +272,15 @@ function getLocalIP() {
 
 var taskTimer;
 function runTask(){
-    clearInterval(taskTimer);
-    taskTimer = setInterval(function(){
+    clearTimeout(taskTimer);
+    taskTimer = setTimeout(function(){
         _runTask();
     }, 1000);
 }
 
 
 function _runTask(){
+    clearTimeout(taskTimer);
     var localIP = getLocalIP();
     console.log('start task', JSON.stringify(dataCache));
 
@@ -269,6 +295,7 @@ function _runTask(){
     if (agent) {
         require('./task.js')(dataCache, agent);
     }
+    runTask();
 }
 runTask();
 // var ip = '127.0.0.1';
