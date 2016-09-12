@@ -5,8 +5,21 @@ try{
 }catch(ex) {}
 
 
-module.exports = function(dataCache, agent) {
+var isRuning = false;
+var runTimer;
+module.exports = run;
+
+function run(dataCache, agent) {
 	if (!groveSensor) return;
+	if (isRuning) {
+		clearTimeout(runTimer);
+		runTimer = setTimeout(function(){
+			run(dataCache, agent);
+		}, 80);
+		return ;
+	}
+	isRuning = true;
+
     var isChange = false;
     console.log("start task");
 
@@ -33,5 +46,6 @@ module.exports = function(dataCache, agent) {
 			console.log("温度：", temp);
 		}
 	}
+	isRuning = false;
 }
 

@@ -29,8 +29,8 @@
         "name": "diy.xdk"
       },
       "diy.xdke": {
-        "previousModTime": 1473578382000,
-        "modified": 1473578382000,
+        "previousModTime": 1473579583000,
+        "modified": 1473579583000,
         "seen": true,
         "name": "diy.xdke"
       },
@@ -47,8 +47,8 @@
         "name": "io.js"
       },
       "main.js": {
-        "previousModTime": 1473578760000,
-        "modified": 1473578760000,
+        "previousModTime": 1473578897000,
+        "modified": 1473578897000,
         "seen": true,
         "name": "main.js"
       },
@@ -377,16 +377,12 @@
         "name": "xdk/project-info.json"
       },
       "task.js": {
-        "previousModTime": 1473575567000,
-        "modified": 1473575567000,
+        "previousModTime": 1473579573000,
+        "modified": 1473579573000,
         "seen": true,
         "name": "task.js"
       }
     },
-    "boardFileStatus": {
-      "main.js": {
-        "previousModTime": 1473578768639
-      }
-    }
+    "boardFileStatus": {}
   }
 }

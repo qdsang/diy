@@ -171,7 +171,7 @@ function upMaster(){
                 },
                 {
                     name: '客厅灯',
-                    link: 'D8',
+                    link: 'D4',
                     linkType: '灯',
                     value: ''
                 },
